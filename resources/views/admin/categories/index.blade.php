@@ -16,16 +16,13 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                 <th scope="col" class="px-6 py-3">
-                Product name
+                Category name
                 </th>
                 <th scope="col" class="px-6 py-3">
-                Color
+                Image
                 </th>
                 <th scope="col" class="px-6 py-3">
-                Category
-                </th>
-                <th scope="col" class="px-6 py-3">
-                Price
+                Description
                 </th>
                 <th scope="col" class="px-6 py-3">
                 <span class="sr-only">Edit</span>
@@ -33,57 +30,29 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                Apple MacBook Pro 17"
-                </th>
-                <td class="px-6 py-4">
-                Sliver
-                </td>
-                <td class="px-6 py-4">
-                Laptop
-                </td>
-                <td class="px-6 py-4">
-                $2999
-                </td>
-                <td class="px-6 py-4 text-right">
-                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                </td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                Microsoft Surface Pro
-                </th>
-                <td class="px-6 py-4">
-                White
-                </td>
-                <td class="px-6 py-4">
-                Laptop PC
-                </td>
-                <td class="px-6 py-4">
-                $1999
-                </td>
-                <td class="px-6 py-4 text-right">
-                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                </td>
-                </tr>
-                <tr class="bg-white dark:bg-gray-800">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                Magic Mouse 2
-                </th>
-                <td class="px-6 py-4">
-                Black
-                </td>
-                <td class="px-6 py-4">
-                Accessories
-                </td>
-                <td class="px-6 py-4">
-                $99
-                </td>
-                <td class="px-6 py-4 text-right">
-                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                </td>
-                </tr>
+                    @foreach ($categories as $category)
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {{ $category->name }}
+                        </th>
+                        <td class="px-6 py-4">
+                            <img src="{{ Storage::url($category->image) }}" alt="">
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $category->description }}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex space-x-2">
+                                <a href="{{ route('admin.categories.edit',$category->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2">Edit</a>
+                                <form action="{{ route('admin.categories.destroy',$category->id) }}" method="post" onsubmit="return confirm('Are you sure?')">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
                 </table>
             </div>
