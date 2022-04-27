@@ -46,21 +46,13 @@ class MenuController extends Controller
             "description" => $request->description,
         ]);
 
-
+        if ($request->has("categories")) {
+            $menu->categories()->attach($request->categories);
+        }
 
         return to_route("admin.menus.index");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -70,7 +62,8 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        return view("admin.menus.edit", compact("menu"));
+        $categories = Category::all();
+        return view("admin.menus.edit", compact("menu", "categories"));
     }
 
     /**
@@ -80,13 +73,23 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MenuStoreRequest $request, Menu $menu)
+    public function update(Request $request, Menu $menu)
     {
+        $request->validate([
+            "name" => "required",
+            "price" => "required",
+            "description" => "required"
+        ]);
+
         $menu->update([
             "name" => $request->name,
             "price" => $request->price,
             "description" => $request->description,
         ]);
+
+        if ($request->has("categories")) {
+            $menu->categories()->sync($request->categories);
+        }
 
         return to_route("admin.menus.index");
     }
