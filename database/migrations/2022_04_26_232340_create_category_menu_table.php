@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('category_menu', function (Blueprint $table) {
-            $table->foreign("category_id")->constrained();
-            $table->foreign("menu_id")->constrained();
+            $table->foreignId("category_id")->constrained();
+            $table->foreignId("menu_id")->constrained();
         });
     }
 

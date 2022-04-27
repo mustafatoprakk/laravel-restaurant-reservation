@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MenuStoreRequest;
 use App\Models\Category;
 use App\Models\Menu;
 use Illuminate\Http\Request;
@@ -37,9 +38,17 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MenuStoreRequest $request)
     {
-        //
+        $menu = Menu::create([
+            "name" => $request->name,
+            "price" => $request->price,
+            "description" => $request->description,
+        ]);
+
+
+
+        return to_route("admin.menus.index");
     }
 
     /**
@@ -59,9 +68,9 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Menu $menu)
     {
-        //
+        return view("admin.menus.edit", compact("menu"));
     }
 
     /**
@@ -71,9 +80,15 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MenuStoreRequest $request, Menu $menu)
     {
-        //
+        $menu->update([
+            "name" => $request->name,
+            "price" => $request->price,
+            "description" => $request->description,
+        ]);
+
+        return to_route("admin.menus.index");
     }
 
     /**
@@ -82,8 +97,10 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Menu $menu)
     {
-        //
+        $menu->delete();
+
+        return to_route("admin.menus.index");
     }
 }
