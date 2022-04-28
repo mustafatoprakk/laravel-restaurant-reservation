@@ -103,7 +103,7 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         $menu->delete();
-
+        $menu->categories()->detach();
         return to_route("admin.menus.index");
     }
 }
